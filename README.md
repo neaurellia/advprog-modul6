@@ -124,3 +124,20 @@ Key advantages:
 
 However, if too many requests exceed the pool size, some requests might have to wait until
 threads become available, introducing a potential bottleneck.
+
+---
+
+## Commit Bonus Reflection Notes
+Commit Bonus Reflection Notes:
+
+The `build` function serves as an alternative constructor for `ThreadPool`. Instead of using `new`
+directly, `new` now calls `build`, keeping the code modular and improving readability.
+
+Advantages of this approach:
+1. **Separation of concerns** – `build` handles the instantiation logic, keeping `new` cleaner.
+2. **Potential for extensions** – Future modifications (e.g., logging or additional checks) can be
+   added to `build` without modifying `new`.
+3. **Improved clarity** – It explicitly defines the thread pool construction process.
+
+This approach makes it easier to maintain and extend the thread pool implementation while keeping
+the API clean.
