@@ -91,3 +91,36 @@ This commit enhances the server by properly handling HTTP requests and serving s
 
 ### Screenshot  
 ![Commit 3 screen capture](commit3.png)  
+
+---
+
+## Commit 4 Reflection Notes  
+
+When accessing `127.0.0.1/sleep` in one browser window and `127.0.0.1` in another,
+we notice that the browser takes time to load the sleep request. This is because
+`thread::sleep(10)` makes the thread sleep for 10 seconds before responding.
+
+Since each request is handled in a separate thread (`thread::spawn`), other requests
+are not blocked and can still be processed. However, if too many users send sleep requests
+simultaneously, the system may experience thread exhaustion or performance degradation.
+
+This simulation helps us understand the impact of slow requests on concurrent systems.
+
+---
+
+## Commit 5 Reflection Notes  
+
+The introduction of a thread pool (`ThreadPool::new(4)`) improves efficiency by limiting the
+number of active threads and reusing worker threads instead of creating new ones for each request.
+This prevents thread exhaustion and optimizes resource utilization.
+
+With the thread pool, slow requests (like `/sleep`) do not create excessive new threads but instead
+utilize the pre-existing worker threads. This prevents system overload while maintaining concurrency.
+
+Key advantages:
+1. Improved performance through worker thread reuse.
+2. Controlled resource consumption by limiting the number of active threads.
+3. Better scalability for handling multiple concurrent requests.
+
+However, if too many requests exceed the pool size, some requests might have to wait until
+threads become available, introducing a potential bottleneck.
